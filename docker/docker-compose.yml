@@ -1,0 +1,39 @@
+version: '2'
+services:
+#  symfony:
+#    build: infrastructure/php-fpm
+#    volumes:
+#      -
+#    working_dir: /var/www/
+#    env_file:
+#      - .env
+
+  nginx:
+    build: nginx
+    container_name: symfony-webserver
+    ports:
+      - '8080:80'
+    links:
+      - php
+    volumes_from:
+      - php
+    volumes:
+      - ./logs/nginx/:/var/log/nginx:cached
+
+  php:
+    build: php-fpm
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../application:/var/www/symfony:cached
+      - ./logs/symfony:/var/www/symfony/var/logs:cached
+#    working_dir: /app
+    container_name: symfony-php
+
+  mysql:
+    image: mysql:8.0
+    container_name: symfony-mysql
+    ports:
+        - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "test"

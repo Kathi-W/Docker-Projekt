@@ -1,0 +1,18 @@
+# config/routes.yaml
+
+# the "app_lucky_number" route name is not important yet
+app_lucky_number:
+    path: /lucky/number
+    controller: App\Controller\LuckyController::number
+
+home:
+  path: /
+  controller: App\Controller\RecipeController::homepageAction
+
+new_recipe:
+  path: /new
+  controller: App\Controller\RecipeController:newRecipeAction
+
+all:
+  path: /all
+  controller: App\Controller\RecipeController:allRecipesAction
