@@ -16,3 +16,7 @@ new_recipe:
 all:
   path: /all
   controller: App\Controller\RecipeController:allRecipesAction
+
+doku:
+  path: /doku
+  controller: App\Controller\RecipeController:dokuAction

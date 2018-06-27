@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use src\Entity\Recipe;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
@@ -25,5 +24,10 @@ class RecipeController extends Controller
     public function allRecipesAction()
     {
         return $this->render('all_recipes.html.twig', array());;
+    }
+
+    public function dokuAction()
+    {
+        return $this->render('doku.html.twig', array());
     }
 }
