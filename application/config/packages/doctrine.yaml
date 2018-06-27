@@ -5,6 +5,9 @@ parameters:
     # You should not need to change this value.
     env(DATABASE_URL): ''
 
+parameters:
+  env(DATABASE_URL): "mysql://root%env(resolve:MYSQL_PASSWORD)%@mysql:3306/%env(resolve:MYSQL_DATABASE)%"
+
 doctrine:
     dbal:
         # configure these for your database server

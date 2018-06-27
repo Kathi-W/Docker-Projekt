@@ -26,12 +26,16 @@ services:
     container_name: symfony-php
 
   mysql:
+    env_file: ../application/.env
     image: mysql:8.0
     container_name: symfony-mysql
     ports:
         - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: "test"
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}"
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: "Kathi"
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
 #  composer:
 #    restart: 'no'

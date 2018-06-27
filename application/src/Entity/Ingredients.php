@@ -9,4 +9,6 @@ class Ingredients
 
     protected $recipe;
 
+    protected $ingredient;
+
 }

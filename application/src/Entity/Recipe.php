@@ -8,6 +8,10 @@ class Recipe
 
     protected $title;
 
+    protected $ingredients;
+
+    protected $note;
+
     public function __construct($id)
     {
         $this->id = $id;
