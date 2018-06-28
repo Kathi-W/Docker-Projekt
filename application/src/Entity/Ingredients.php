@@ -11,4 +11,9 @@ class Ingredients
 
     protected $ingredient;
 
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
 }

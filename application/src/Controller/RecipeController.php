@@ -16,6 +16,7 @@ class RecipeController extends Controller
 
     public function newRecipeAction(Request $request)
     {
+//        $recipe = new Recipe();
         $title = $request->request->get("form")['title'];
         return $this->render('new_recipe.html.twig', array());;
 

@@ -8,13 +8,13 @@ class Recipe
 
     protected $title;
 
-    protected $ingredients;
+//    protected $ingredients;
 
     protected $note;
 
-    public function __construct($id)
+    public function __construct($title)
     {
-        $this->id = $id;
+        $this->title = $title;
     }
 
     public function getId()
