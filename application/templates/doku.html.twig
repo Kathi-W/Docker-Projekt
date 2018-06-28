@@ -24,7 +24,14 @@
         <li>compose:</li>
     </ul>
 
+    <p>
+        <h4>Die Datenbank anbinden</h4>
+        Um die Datenbank richtig anzubinden, müssen zunächst die environment variablen im docker-compose file richtig gesetzt werden
 
+        Um sich zu mysql zu verbinden: docker-compose run mysql mysql -hmysql -P3306 -p
+        erstes mysql: name des Containers, das zweite: das programm mysql, -hmysql=hostname
+
+    </p>
     <h4></h4>
     </div>
 {% endblock %}

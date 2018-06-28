@@ -2,7 +2,7 @@
 
 namespace src\Entity;
 
-class Ingredients
+class Ingredient
 {
 
     protected $id;
