@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Entity;
+namespace App\Entity;
 
 class Recipe
 {
@@ -8,7 +8,7 @@ class Recipe
 
     protected $title;
 
-//    protected $ingredients;
+    protected $ingredients;
 
     protected $note;
 

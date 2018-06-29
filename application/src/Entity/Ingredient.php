@@ -1,10 +1,9 @@
 <?php
 
-namespace src\Entity;
+namespace App\Entity;
 
 class Ingredient
 {
-
     protected $id;
 
     protected $recipe;

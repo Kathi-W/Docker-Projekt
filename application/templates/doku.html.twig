@@ -28,9 +28,25 @@
         <h4>Die Datenbank anbinden</h4>
         Um die Datenbank richtig anzubinden, müssen zunächst die environment variablen im docker-compose file richtig gesetzt werden
 
-        Um sich zu mysql zu verbinden: docker-compose run mysql mysql -hmysql -P3306 -p
+        Um sich zu mysql zu verbinden: docker-compose exec mysql mysql -hmysql -P3306 -p
         erstes mysql: name des Containers, das zweite: das programm mysql, -hmysql=hostname
 
+
+
+
+        mapping.orm.xml: entity name= namespace + Klassenname (in composer.json)
+        "autoload": {
+        "psr-4": {
+        "App\\": "src/"
+        },
+
+
+
+        docker-compose exec php php bin/console doctrine:schema:update --force
+        ->die datenbank updaten (tabellen erstellen)
+
+        mysql -u root -p -h 127.0.0.1 --port 3306
+        ->verbindung zur datenbank von rechner
     </p>
     <h4></h4>
     </div>

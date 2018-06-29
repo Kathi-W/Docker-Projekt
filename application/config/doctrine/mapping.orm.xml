@@ -3,7 +3,7 @@
                     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="src\Entity\Recipe" repository-class="RecipeRepository" table="recipe">
+    <entity name="App\Entity\Recipe" repository-class="RecipeRepository" table="recipe">
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
@@ -11,15 +11,17 @@
         <field name="title" type="string"/>
         <field name="note" type="string"/>
 
-        <one-to-many target-entity="ingredient" mapped-by="recipe" field="ingredient" />
+        <one-to-many target-entity="App\Entity\Ingredient" mapped-by="recipe" field="ingredients" />
     </entity>
 
-    <entity name="src\Entity\Ingerdient">
+    <entity name="App\Entity\Ingredient" table="ingredient">
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
 
-        <many-to-one target-entity="recipe" field="recipe"/>
+        <field name="ingredient" type="string"/>
+
+        <many-to-one target-entity="App\Entity\Recipe" field="recipe"/>
     </entity>
 
 </doctrine-mapping>
