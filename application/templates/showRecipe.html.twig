@@ -1,0 +1,25 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <div class="center card bg-light mb-3">
+        <h3 class="card-header"><strong>{{ recipe.title }}</strong></h3>
+    <div class="card-body">
+        <h4>Zutaten:</h4>
+        {% for ingredient in recipe.ingredients %}
+         <ul>
+             {#<li>{{ ingredient }}</li>#}
+         </ul>
+        {% endfor %}
+
+        <h4>Anleitung:</h4>
+        {{ recipe.note }}
+    </div>
+
+        <button type="button" class="btn btn-danger" style="width: 40%">Löschen</button>
+        <button type="button" class="btn btn-primary">Bearbeiten</button>
+
+    </div>
+
+
+{% endblock %}

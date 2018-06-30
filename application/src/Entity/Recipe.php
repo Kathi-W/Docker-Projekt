@@ -8,18 +8,47 @@ class Recipe
 
     protected $title;
 
-    protected $ingredients;
+    protected $ingredients = [];
 
     protected $note;
 
-    public function __construct($title)
+    public function __construct()
     {
-        $this->title = $title;
     }
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setNote($note)
+    {
+        $this->note = $note;
+    }
+
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    public function addIngredient($ingredient)
+    {
+        $this->ingredients[] = $ingredient;
+    }
+
+    public function getIngredients()
+    {
+        return $this->ingredients;
     }
 
 }

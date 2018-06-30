@@ -26,3 +26,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Entity\Recipe:
+        class: App\Entity\Recipe
+        arguments: ['@App\Entity\RecipeRepository']
+
+    App\Entity\RecipeRepository:
+        class: App\Entity\RecipeRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ['App\Entity\Recipe']

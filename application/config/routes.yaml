@@ -11,12 +11,23 @@ home:
 
 new_recipe:
   path: /new
+  methods:  [GET]
   controller: App\Controller\RecipeController:newRecipeAction
 
-all:
-  path: /all
-  controller: App\Controller\RecipeController:allRecipesAction
+list:
+  path: /list
+  controller: App\Controller\RecipeController:listRecipesAction
 
 doku:
   path: /doku
   controller: App\Controller\RecipeController:dokuAction
+
+save:
+  path: /new
+  methods: [POST]
+  controller: App\Controller\RecipeController:saveAction
+
+show:
+  path: /show/{id}
+  methods: [GET]
+  controller: App\Controller\RecipeController:showRecipeAction

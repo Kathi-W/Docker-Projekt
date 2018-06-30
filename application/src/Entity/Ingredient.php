@@ -10,9 +10,23 @@ class Ingredient
 
     protected $ingredient;
 
-    public function __construct($id)
+    public function __construct()
     {
-        $this->id = $id;
+    }
+
+    public function setIngredient($ingredient)
+    {
+        return $this->ingredient = $ingredient;
+    }
+
+    public function getIngredient()
+    {
+        return $this->ingredient;
+    }
+
+    public function setRecipe($recipe)
+    {
+        return $this->recipe = $recipe;
     }
 
 }

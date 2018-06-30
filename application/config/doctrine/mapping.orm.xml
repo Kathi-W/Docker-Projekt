@@ -9,9 +9,13 @@
         </id>
 
         <field name="title" type="string"/>
-        <field name="note" type="string"/>
+        <field name="note" type="text"/>
 
-        <one-to-many target-entity="App\Entity\Ingredient" mapped-by="recipe" field="ingredients" />
+        <one-to-many target-entity="App\Entity\Ingredient" mapped-by="recipe" field="ingredients">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
     </entity>
 
     <entity name="App\Entity\Ingredient" table="ingredient">
@@ -21,7 +25,11 @@
 
         <field name="ingredient" type="string"/>
 
-        <many-to-one target-entity="App\Entity\Recipe" field="recipe"/>
+        <many-to-one target-entity="App\Entity\Recipe" field="recipe" inversed-by="ingredients">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>
