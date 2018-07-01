@@ -12,4 +12,9 @@ class IngredientRepository extends EntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function delete(Ingredient $ingredient)
+    {
+        $this->getEntityManager()->remove($ingredient);
+        $this->getEntityManager()->flush();
+    }
 }

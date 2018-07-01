@@ -31,3 +31,23 @@ show:
   path: /show/{id}
   methods: [GET]
   controller: App\Controller\RecipeController:showRecipeAction
+
+show_delete:
+  path: /delete/{id}
+  methods: [GET]
+  controller: App\Controller\RecipeController:showDeleteRecipeAction
+
+delete:
+  path: /delete/{id}
+  methods: [POST]
+  controller: App\Controller\RecipeController:deleteRecipeAction
+
+show_update:
+  path: /update/{id}
+  methods: [GET]
+  controller: App\Controller\RecipeController:ShowUpdateRecipeAction
+
+update:
+  path: /update/{id}
+  methods: [POST]
+  controller: App\Controller\RecipeController:updateRecipeAction

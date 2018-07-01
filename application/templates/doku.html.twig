@@ -3,55 +3,91 @@
 {% block content %}
 
     <div class="doku">
+    <h4>Meine Aufgabe</h4>
+    <p>
+        Ich möchte eine Symfony Web Applikation mit Datenbankanbindung erstellen.
+        Dafür benötige ich:
+        <ul>
+            <li>Ein Symfony Skeleton</li>
+            <li>Einen Webserver, ich verwende Nginx</li>
+            <li>Eine Datenbank</li>
+            <li>PHP</li>
+        </ul>
+
+        Mein Ziel ist es, eine Applikation für Rezepte zu erstellen. Man soll Rezepte anlegen, bearbeiten und löschen können, sowie alle Rezepte anzeigen.
+    </p>
+
     <h4>Erstellung der Symfony Applikation</h4>
     <p>
-        Symfony bietet ein WebApp Skelett. Dieses lässt sich mit dem Befehl "" erstellen.
+        Symfony bietet ein WebApp Skelett. Dieses lässt sich mit dem Befehl <code>composer create-project symfony/website-skeleton my-project</code> erstellen.
         Es wird eine Verzeichnisstruktur erstellt, die wie folgt aussieht:
+        <pre><code>
+                Symfony-Anwendung/
+                ├─ bin/
+                │  └─ console
+                ├─ config/
+                └─ public/
+                │  └─ index.php
+                ├─ src/
+                │  └─ Kernel.php
+                ├─ templates/
+                ├─ tests/
+                ├─ var/
+                │  ├─ cache/
+                │  └─ log/
+                └─ vendor/
+            </code></pre>
 
+        Die eigentliche Anwendung befindet sich später unter <code>src</code>. Dort werden der Controller, die Entities sowie die Repositories angelegt.
+        Symfony arbeitet mit der template engine <strong>twig</strong>. Die html.twig Dateien werden im Verzeichnis <code>templates</code> gespeichert.
     </p>
 
     <h4>Das Docker Verzeichnis</h4>
     <p>
-
-    docker-compose.yml: Als nächstes habe ich 4 services definiert: nginx, php, mysql und compose
+        Als nächstes habe ich auf der gleichen Ebene wie die Symfony-Anwendung ein neues Verzeichnis <strong>docker</strong> angelegt.
+        Dort benötige ich als erstes eine <code>docker-compose.yml</code>, da ich mehrere Docker Container benötige.
+        Als erstes muss ich die Version festlegen. Hierbei habe ich mich für Version 2 anstatt der neueren Verion 3 entschieden, da
+        diese für unerfahrene Docker Benutzer einfacher zu benutzen ist.
+        Als nächstes müssen die vier Services definiert werden:
     </p>
 
-
     <ul>
-        <li>nginx:</li>
-        <li>php:</li>
-        <li>mysql:</li>
-        <li>compose:</li>
+        <li><strong>nginx</strong>: Hier wird der Port, laut Projekt-Vorgaben, auf 19040 gesetzt und ein Link zu php gesetzt. Im Verzeichnis <code>docker/nginx</code>
+        liegt der Dockerfile für den build und eine config Datei.</li>
+        <li><strong>php</strong>:</li>
+        <li><strong>mysql</strong>:Für diesen Container habe ich das mysql:5 image aus dem offiziellen Repository verwendet. Da die neueste Version 8 sha256 hashing verwendet und
+        dies nicht mit dem php client kompatibel ist, habe ich die Version 5 verwendet.</li>
+        <li><strong>compose</strong>: Dieser Container soll dafür sorgen, dass Composer installiert wird, sowie dass die Datenbank upgedated wird
+        Dafür sorgt <code>command: bash -c "wait-for-it -t 90 mysql:3306 && composer install && php bin/console doctrine:schema:update --force"</code>
+        Das Kommando <code>wait-for-it</code> sorgt dafür, dass diese Befehle auf jeden Fall erst ausgeführt werden, wenn die anderen Container fertig sind, insbesondere
+        der mysql Container. Ansonsten entsteht eine race condition und es kann dazu kommen, dass das sql zu früh geladen wird.</li>
     </ul>
 
     <p>
         <h4>Die Datenbank anbinden</h4>
-        Um die Datenbank richtig anzubinden, müssen zunächst die environment variablen im docker-compose file richtig gesetzt werden
+        Um die Datenbank richtig anzubinden, müssen zunächst die environment Variablen im <code>docker-compose.yml</code> richtig gesetzt werden.
+        Mit <strong>MYSQL_ROOT_PASSWORD</strong> wird das Passwort der Datenbank gesetzt, mit <strong>MYSQL_DATABASE</strong> der Name und mit
+        <strong>MYSQL_USER</strong> den Usernamen.
+    </p>
+    <p>
+        Mit <code>mysql -u root -p -h 127.0.0.1 --port 3306</code> kann nun die Verbindung zur Datenbank hergestellt werden.
+    </p>
 
-        Um sich zu mysql zu verbinden: docker-compose exec mysql mysql -hmysql -P3306 -p
-        erstes mysql: name des Containers, das zweite: das programm mysql, -hmysql=hostname
-
-
-
-
-        mapping.orm.xml: entity name= namespace + Klassenname (in composer.json)
-        "autoload": {
-        "psr-4": {
-        "App\\": "src/"
-        },
-
-
-
-        docker-compose exec php php bin/console doctrine:schema:update --force
-        ->die datenbank updaten (tabellen erstellen)
-
-        mysql -u root -p -h 127.0.0.1 --port 3306
-        ->verbindung zur datenbank von rechner
+    <h4>Aufbau Der Web Applikation</h4>
+    <p>
+        Zunächst habe ich die zwei Entities <strong>Recipe</strong> und <strong>Ingredient</strong> und die dazugehörigen Repositories erstellt.
     </p>
 
     <p>
-        <h3>Die Seite schön machen</h3>
+        <h4>Die Seite schön machen</h4>
+        grgggdggdfgdgdfgdgdfg
     </p>
     <h4></h4>
     </div>
 {% endblock %}
+
+{#mapping.orm.xml: entity name= namespace + Klassenname (in composer.json)#}
+{#"autoload": {#}
+{#"psr-4": {#}
+{#"App\\": "src/"#}
+{#},#}

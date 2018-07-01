@@ -2,24 +2,23 @@
 
 {% block content %}
 
-    <div class="center card bg-light mb-3">
-        <h3 class="card-header"><strong>{{ recipe.title }}</strong></h3>
-    <div class="card-body">
-        <h4>Zutaten:</h4>
-        {% for ingredient in recipe.ingredients %}
-         <ul>
-             {#<li>{{ ingredient }}</li>#}
-         </ul>
-        {% endfor %}
+    <div class="ingredient card bg-light mb-3">
+        <h3 class="card-header "><strong>{{ recipe.title }}</strong>
+            <a href="{{ path('delete', {id: recipe.id}) }}" class="fa fa-trash float-right" style="font-size:24px"></a>
+            <a href="{{ path('update', {id: recipe.id}) }}" class="fa fa-pencil float-right" style="font-size:24px"></a>
 
-        <h4>Anleitung:</h4>
-        {{ recipe.note }}
+        </h3>
+        <div class="card-body">
+            <h4>Zutaten:</h4>
+            {% for ingredient in recipe.ingredients %}
+             <ul>
+                 <li>{{ ingredient.ingredient }}</li>
+             </ul>
+            {% endfor %}
+
+            <h4>Anleitung:</h4>
+            {{ recipe.note }}
+        </div>
     </div>
-
-        <button type="button" class="btn btn-danger" style="width: 40%">Löschen</button>
-        <button type="button" class="btn btn-primary">Bearbeiten</button>
-
-    </div>
-
 
 {% endblock %}

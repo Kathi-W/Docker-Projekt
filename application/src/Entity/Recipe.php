@@ -51,4 +51,9 @@ class Recipe
         return $this->ingredients;
     }
 
+    public function setIngredients($ingredients)
+    {
+        $this->ingredients = $ingredients;
+    }
+
 }

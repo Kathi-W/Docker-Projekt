@@ -30,7 +30,16 @@ services:
         class: App\Entity\Recipe
         arguments: ['@App\Entity\RecipeRepository']
 
+    App\Entity\Ingredient:
+        class: App\Entity\Ingredient
+        arguments: ['@App\Entity\IngredientRepository']
+
     App\Entity\RecipeRepository:
         class: App\Entity\RecipeRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ['App\Entity\Recipe']
+
+    App\Entity\IngredientRepository:
+          class: App\Entity\IngredientRepository
+          factory: 'doctrine.orm.default_entity_manager:getRepository'
+          arguments: ['App\Entity\Ingredient']

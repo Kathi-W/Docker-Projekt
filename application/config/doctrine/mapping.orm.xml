@@ -18,7 +18,7 @@
         </one-to-many>
     </entity>
 
-    <entity name="App\Entity\Ingredient" table="ingredient">
+    <entity name="App\Entity\Ingredient" repository-class="IngredientRepository" table="ingredient">
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>

@@ -1,0 +1,20 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <form method="post">
+        <div class="form-group recipe">
+            <label for="title">Rezept Name</label>
+            <input type="text" class="form-control" name="title" placeholder="Rezept" value="{{ recipe.title }}">
+            <br>
+            <textarea class="form-control" type="text" name="ingredient" rows="3" placeholder="Zutat">{% for ingredient in recipe.ingredients %}{{ ingredient.ingredient }}{% endfor %}</textarea>
+            <br>
+            <label for="note">Notizen</label>
+            <textarea class="form-control" name="note" rows="5">{{ recipe.note }}</textarea>
+            <br>
+            <input type="hidden" name="id" value="{{ recipe.id }}">
+            <input type="submit" value="submit">
+        </div>
+    </form>
+
+{% endblock %}

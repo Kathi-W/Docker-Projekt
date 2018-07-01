@@ -12,9 +12,14 @@ class RecipeRepository extends EntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function findRecipes($recipeId)
+    public function delete(Recipe $recipe)
     {
-        return $this->findBy(["recipe" => $recipeId]);
+        $ingredients = $recipe->getIngredients();
+        foreach ($ingredients as $ingredient) {
+            $this->getEntityManager()->remove($ingredient);
+            $this->getEntityManager()->flush();
+        }
+        $this->getEntityManager()->remove($recipe);
+        $this->getEntityManager()->flush();
     }
-
 }
