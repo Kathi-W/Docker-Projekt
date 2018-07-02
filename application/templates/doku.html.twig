@@ -75,12 +75,33 @@
 
     <h4>Aufbau Der Web Applikation</h4>
     <p>
-        Zunächst habe ich die zwei Entities <strong>Recipe</strong> und <strong>Ingredient</strong> und die dazugehörigen Repositories erstellt.
+        Für die Datenbank habe ich zunächst ein Schema erstellt.
+        Dann habe ich die zwei Entities <strong>Recipe</strong> und <strong>Ingredient</strong> und die dazugehörigen Repositories erstellt.
+        <strong>Recipe</strong> hat die Properties id, title, note und ingredients. <strong>Ingredient</strong> hat die Properties id, recipe und ingredient.
+        Danach habe ich die benötigten getter und setter Methoden erstellt. Die Repositories haben jeweils eine <code>save()</code> und eine <code>delete()</code>
+        Methode.
+    </p>
+    <p>
+        Als nächstes wird eine <code>mapping.orm.xml</code> benötigt. Für beide Entities wird ein Primärschlüssel mit dem <code>id-Tag</code> angelegt.
+        Alle weiteren Felder werden mit dem <code>field-Tag</code> definiert.
     </p>
 
     <p>
-        <h4>Die Seite schön machen</h4>
-        grgggdggdfgdgdfgdgdfg
+        Der <code>RecipeController</code> enthält alle Funktionen für die verschiedenen Vorgänge und die <code>html.twig</code> Dateien habe ich die
+        Applikation gestaltet. Dazu habe ich Bootstrap verwendet. Die <code>layout.html.twig</code> enthält das Grundgerüst der Applikation und alle anderen
+        html.twig Dateien leiten davon ab.
+    </p>
+    <p>
+        Dann muss die <code>routing.yaml</code> und die <code>services.yaml</code> befüllt werden.
+        In der <code>routing.yaml</code> müssen alle Routen und die dazugehörige Funktion im Controller festgehalten werden.
+        Außerdem kann auch die Methode, z.B. POST oder GET definiert werden.
+        In der <code>services.yaml</code> müssen Entities und Repositories definiert werden, um sie als Service im Controller
+        verwenden zu können.
+    </p>
+
+    <p>
+        <h4>Schwierigkeiten</h4>
+
     </p>
     <h4></h4>
     </div>
