@@ -6,8 +6,6 @@ parameters:
     env(DATABASE_URL): ''
 
 #parameters:
-  # env(DATABASE_URL): "mysql://root:%env(resolve:MYSQL_PASSWORD)%@mysql:3306/%env(resolve:MYSQL_DATABASE)%"
-  #env(DATABASE_URL): "mysql:dbname=%env(resolve:MYSQL_DATABASE)%;host=mysql;port=3306;dbuser=root;dbpassword=%env(resolve:MYSQL_PASSWORD)%"
 
 doctrine:
     dbal:

@@ -5,16 +5,16 @@
     <div class="doku">
     <h4>Meine Aufgabe</h4>
     <p>
-        Ich möchte eine Symfony Web Applikation mit Datenbankanbindung erstellen.
-        Dafür benötige ich:
+        Für mein Docker Projekt möchte ich eine Symfony Web Applikation mit Datenbankanbindung erstellen.
+        Mein Ziel ist es, eine Applikation für Rezepte zu erstellen. Man soll Rezepte anlegen, bearbeiten und löschen können, sowie alle Rezepte anzeigen können.
+        <p>Dafür benötige ich:</p>
         <ul>
             <li>Ein Symfony Skeleton</li>
             <li>Einen Webserver, ich verwende Nginx</li>
             <li>Eine Datenbank</li>
-            <li>PHP</li>
+            <li>Einen PHP-Client</li>
         </ul>
-
-        Mein Ziel ist es, eine Applikation für Rezepte zu erstellen. Man soll Rezepte anlegen, bearbeiten und löschen können, sowie alle Rezepte anzeigen.
+        Das bedeutet ich brauche mindestens drei Docker Container für diese Services.
     </p>
 
     <h4>Erstellung der Symfony Applikation</h4>
@@ -22,7 +22,7 @@
         Symfony bietet ein WebApp Skelett. Dieses lässt sich mit dem Befehl <code>composer create-project symfony/website-skeleton my-project</code> erstellen.
         Es wird eine Verzeichnisstruktur erstellt, die wie folgt aussieht:
         <pre><code>
-                Symfony-Anwendung/
+                my-project/
                 ├─ bin/
                 │  └─ console
                 ├─ config/
@@ -39,7 +39,7 @@
             </code></pre>
 
         Die eigentliche Anwendung befindet sich später unter <code>src</code>. Dort werden der Controller, die Entities sowie die Repositories angelegt.
-        Symfony arbeitet mit der template engine <strong>twig</strong>. Die html.twig Dateien werden im Verzeichnis <code>templates</code> gespeichert.
+        Symfony arbeitet mit der template engine <strong>twig</strong>. Die <code>html.twig</code> Dateien werden im Verzeichnis <code>templates</code> gespeichert.
     </p>
 
     <h4>Das Docker Verzeichnis</h4>
@@ -48,27 +48,81 @@
         Dort benötige ich als erstes eine <code>docker-compose.yml</code>, da ich mehrere Docker Container benötige.
         Als erstes muss ich die Version festlegen. Hierbei habe ich mich für Version 2 anstatt der neueren Verion 3 entschieden, da
         diese für unerfahrene Docker Benutzer einfacher zu benutzen ist.
+        <br>
         Als nächstes müssen die vier Services definiert werden:
     </p>
 
     <ul>
-        <li><strong>nginx</strong>: Hier wird der Port, laut Projekt-Vorgaben, auf 19040 gesetzt und ein Link zu php gesetzt. Im Verzeichnis <code>docker/nginx</code>
-        liegt der Dockerfile für den build und eine config Datei.</li>
-        <li><strong>php</strong>:</li>
-        <li><strong>mysql</strong>:Für diesen Container habe ich das mysql:5 image aus dem offiziellen Repository verwendet. Da die neueste Version 8 sha256 hashing verwendet und
-        dies nicht mit dem php client kompatibel ist, habe ich die Version 5 verwendet.</li>
-        <li><strong>compose</strong>: Dieser Container soll dafür sorgen, dass Composer installiert wird, sowie dass die Datenbank upgedated wird
+        <details><summary><strong>nginx:</strong></summary>
+            <pre><code>
+              nginx:
+                build: nginx
+                container_name: symfony-webserver
+                ports:
+                  - '19040:80'
+                links:
+                  - php
+                volumes_from:
+                  - php
+                volumes:
+                  - ./logs/nginx/:/var/log/nginx:cached
+            </code></pre>
+        </details> Hier wird der Port, laut Projekt-Vorgaben, auf 19040 gesetzt und ein Link zu php gesetzt. Im Verzeichnis <code>docker/nginx</code>
+        liegt der Dockerfile für den build und eine config Datei. Der Dockerfile gibt die neueste Version von nginx an und die default.conf die Konfigurationen
+        für den Server.
+
+        <details><summary><strong>php:</strong></summary>
+            <pre><code>
+              php:
+                build: php-fpm
+                links:
+                  - mysql
+                volumes:
+                  - ../application:/var/www/symfony:cached
+                  - ./logs/symfony:/var/www/symfony/var/logs:cached
+                container_name: symfony-php
+            </code></pre>
+        </details> Im <code>docker/php-fpm</code> Verzeichnis liegt der Dockerfile für den build. Dort wird die neueste Version von php-fpm verwendet und
+        Sachen installiert, die Symfony und mysql benötigen.
+
+        <details><summary><strong>mysql:</strong></summary>
+            <pre><code>
+               mysql:
+                image: mysql:5
+                container_name: symfony-mysql
+                environment:
+                    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+                    MYSQL_DATABASE: ${MYSQL_DATABASE}
+                    MYSQL_USER: ${MYSQL_USER}
+                    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            </code></pre>
+        </details>Für diesen Container habe ich das mysql:5 image aus dem offiziellen Repository verwendet. Da die neueste Version 8 sha256 hashing verwendet und
+        dies nicht mit dem php client kompatibel ist, habe ich die Version 5 verwendet.
+
+        <details><summary><strong>compose:</strong></summary>
+            <pre><code>
+                  composer:
+                    restart: 'no'
+                    build: php-fpm
+                    command: bash -c "wait-for-it -t 90 mysql:3306 && composer install && php bin/console doctrine:schema:update --force"
+                    volumes:
+                     - ../application:/var/www/symfony:cached
+                     - ./logs/symfony:/var/www/symfony/var/logs:cached
+            </code></pre>
+
+        </details> Dieser Container soll dafür sorgen, dass Composer installiert wird, sowie dass die Datenbank upgedated wird
         Dafür sorgt <code>command: bash -c "wait-for-it -t 90 mysql:3306 && composer install && php bin/console doctrine:schema:update --force"</code>
         Das Kommando <code>wait-for-it</code> sorgt dafür, dass diese Befehle auf jeden Fall erst ausgeführt werden, wenn die anderen Container fertig sind, insbesondere
-        der mysql Container. Ansonsten entsteht eine race condition und es kann dazu kommen, dass das sql zu früh geladen wird.</li>
+        der mysql Container. Ansonsten entsteht eine race condition und es kann dazu kommen, dass das sql zu früh geladen wird.
     </ul>
 
     <p>
         <h4>Die Datenbank anbinden</h4>
         Um die Datenbank richtig anzubinden, müssen zunächst die environment Variablen im <code>docker-compose.yml</code> richtig gesetzt werden.
         Mit <strong>MYSQL_ROOT_PASSWORD</strong> wird das Passwort der Datenbank gesetzt, mit <strong>MYSQL_DATABASE</strong> der Name und mit
-        <strong>MYSQL_USER</strong> den Usernamen.
+        <strong>MYSQL_USER</strong> der Username.
     </p>
+        Ich habe etwas Zeit gebraucht um zu merken, dass die neuste Version von mysql nicht kompatibel mit dem php-client ist.
     <p>
         Mit <code>mysql -u root -p -h 127.0.0.1 --port 3306</code> kann nun die Verbindung zur Datenbank hergestellt werden.
     </p>
@@ -83,32 +137,64 @@
     </p>
     <p>
         Als nächstes wird eine <code>mapping.orm.xml</code> benötigt. Für beide Entities wird ein Primärschlüssel mit dem <code>id-Tag</code> angelegt.
-        Alle weiteren Felder werden mit dem <code>field-Tag</code> definiert.
+        Alle weiteren Felder werden mit dem <code>field-Tag</code> definiert. Der Enitity name setzt sich aus <strong>namespace + Klassenname</strong> zusammen, nicht
+        aus dem Pfad zu der Entity. Dies ist in der <details><summary><code>composer.json</code></summary>
+            <p><pre><code>
+            "autoload": {
+                "psr-4": {
+                    "App\\": "src/"
+                },
+                "psr-0": {"": "src/"}
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "App\\Tests\\": "tests/"
+                }
+            },
+            </code></pre></p> </details> festgelegt. Das bedeutet Ein Namespace (oder Sub-Namespace) ist an ein beliebiges Verzeichnis gekoppelt,
+        und die Klassen (oder Sub-Namespaces) darin folgen dann einem festen 1:1-Mapping von Sub-Namespaces/Klassennamen auf die Verzeichnisstruktur.
     </p>
 
     <p>
-        Der <code>RecipeController</code> enthält alle Funktionen für die verschiedenen Vorgänge und die <code>html.twig</code> Dateien habe ich die
-        Applikation gestaltet. Dazu habe ich Bootstrap verwendet. Die <code>layout.html.twig</code> enthält das Grundgerüst der Applikation und alle anderen
-        html.twig Dateien leiten davon ab.
+        Der <code>RecipeController</code> enthält alle Funktionen für das speichern, löschen, anzeigen und bearbeiten der Rezepte. Für Die <code>html.twig</code> Dateien
+        habe ich Bootstrap verwendet. Die <code>layout.html.twig</code> enthält das Grundgerüst der Applikation und alle anderen
+        <code>html.twig</code> Dateien leiten davon ab.
     </p>
     <p>
-        Dann muss die <code>routing.yaml</code> und die <code>services.yaml</code> befüllt werden.
-        In der <code>routing.yaml</code> müssen alle Routen und die dazugehörige Funktion im Controller festgehalten werden.
-        Außerdem kann auch die Methode, z.B. POST oder GET definiert werden.
-        In der <code>services.yaml</code> müssen Entities und Repositories definiert werden, um sie als Service im Controller
-        verwenden zu können.
-    </p>
+        Als nächstes muss die <code>routes.yaml</code> und die <code>services.yaml</code> befüllt werden. <br>
 
+        <details><summary>Beispiel routes.yml</summary><p><pre><code>
+        new_recipe:
+            path: /new
+            methods:  [GET]
+            controller: App\Controller\RecipeController:newRecipeAction
+            </code></pre></p></details>
+
+        <br>
+
+        <p>Als erstes wird der Name der Route definiert, <strong>path</strong> gibt den Pfad in der URL an, <strong>methods</strong> gibt die HTTP Methode an
+        <strong>controller</strong> gibt den Controller und die dazugehörige Funktion an.</p>
+
+        <details><summary>Beispiel services.yaml</summary><p><pre><code>
+        App\Entity\Recipe:
+            class: App\Entity\Recipe
+            arguments: ['@App\Entity\RecipeRepository']
+        </code></pre></p></details>
+
+        <br>
+
+        <p>Als erstes wird der namespace angegeben. <strong>class</strong> gibt die Klasse an und <strong>arguments</strong> gibt die Argumente an,
+        die im Controller übergeben werden.</p>
+
+
+    <h4>Die funktionierende App</h4>
     <p>
-        <h4>Schwierigkeiten</h4>
-
+        Nun kann im Docker Verzeichnis <code>docker-compose build</code> aufgerufen werden, um alle Container zu bauen und <code>docker-compose up -d</code>,
+        um die Container zu starten. <br>
+        Falls Änderungen an den config Dateien vorgenommen werden, müssen die Container mit <code>docker-compose stop</code> gestoppt werden, mit
+        <code>docker-compose rm</code> gelöscht werden und dann erneut gebaut und gestartet werden. <br>
+        Natürlich wird bei jedem Löschen der Container auch der Inhalt der Datenbank gelöscht.
     </p>
     <h4></h4>
     </div>
 {% endblock %}
-
-{#mapping.orm.xml: entity name= namespace + Klassenname (in composer.json)#}
-{#"autoload": {#}
-{#"psr-4": {#}
-{#"App\\": "src/"#}
-{#},#}

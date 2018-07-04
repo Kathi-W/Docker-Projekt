@@ -16,8 +16,6 @@ services:
 
   php:
     build: php-fpm
-    ports:
-      - "9000:9000"
     links:
       - mysql
     volumes:
@@ -28,10 +26,6 @@ services:
   mysql:
     image: mysql:5
     container_name: symfony-mysql
-    ports:
-        - "3306:3306"
-    expose:
-        - "3306"
     environment:
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_DATABASE: ${MYSQL_DATABASE}

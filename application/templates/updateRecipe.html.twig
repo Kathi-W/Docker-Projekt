@@ -3,7 +3,7 @@
 {% block content %}
 
     <form method="post">
-        <div class="form-group recipe">
+        <div class="form-group center">
             <label for="title">Rezept Name</label>
             <input type="text" class="form-control" name="title" placeholder="Rezept" value="{{ recipe.title }}">
             <br>
@@ -13,7 +13,7 @@
             <textarea class="form-control" name="note" rows="5">{{ recipe.note }}</textarea>
             <br>
             <input type="hidden" name="id" value="{{ recipe.id }}">
-            <input type="submit" value="submit">
+            <input type="submit" value="speichern">
         </div>
     </form>
 

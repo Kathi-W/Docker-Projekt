@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <div class="ingredient card bg-light mb-3">
+    <div class="center card bg-light mb-3">
         <h3 class="card-header "><strong>{{ recipe.title }}</strong>
             <a href="{{ path('delete', {id: recipe.id}) }}" class="fa fa-trash float-right" style="font-size:24px"></a>
             <a href="{{ path('update', {id: recipe.id}) }}" class="fa fa-pencil float-right" style="font-size:24px"></a>

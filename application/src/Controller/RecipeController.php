@@ -1,5 +1,5 @@
 <?php
-// src/Controller/RecipeController.php
+
 namespace App\Controller;
 
 use App\Entity\Ingredient;
@@ -69,7 +69,7 @@ class RecipeController extends Controller
 
     public function listRecipesAction()
     {
-        $recipes = $this->recipeRepository->findBy(array(), array("title" => 'asc'));
+        $recipes = $this->recipeRepository->findBy(array(), array("title" => 'ASC'));
         return $this->render('listRecipes.html.twig', array('recipes' => $recipes));
     }
 

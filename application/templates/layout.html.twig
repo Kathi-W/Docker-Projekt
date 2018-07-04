@@ -8,45 +8,38 @@
 
     <style>
         div.center {
-            position: fixed;
-            width: 40%;
-            top: 50%;
-            left: 40%;
-            margin-top: -10%;
-            margin-left: -10%;
+            display: block;
+            margin: auto;
+            max-width: 600px;
+            padding: 1em;
         }
 
         div.doku {
-            position: fixed;
-            width: 60%;
-            top: 30%;
-            left: 30%;
-            margin-top: -10%;
-            margin-left: -10%;
-            height: 80%;
-            overflow: auto;
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 1em;
         }
 
-        div.ingredient {
-            position: fixed;
-            width: 60%;
-            top: 30%;
-            left: 30%;
-            margin-top: -10%;
-            margin-left: -10%;
-        }
-
-        div.recipe {
-            position: fixed;
-            width: 40%;
-            top: 40%;
-            left: 40%;
-            margin-top: -10%;
-            margin-left: -10%;
+        div.list-recipes {
+            width: 800px;
+            margin: auto;
+            margin-top: 10vh;
+            padding: 1em;
         }
 
         h4 {
             text-decoration: underline;
+        }
+
+        @media (min-width: 600px) and (min-height: 600px) {
+            div.center {
+                position: absolute;
+                width: 600px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>

@@ -3,16 +3,17 @@
 {% block content %}
 
     <form method="post">
-        <div class="form-group recipe" style="resize:none">
+        <div class="form-group center" style="resize:none">
             <label for="title">Rezept Name</label>
             <input type="text" class="form-control" name="title" placeholder="Rezept">
             <br>
-            <textarea class="form-control" type="text" name="ingredient" rows="3" placeholder="Zutat"></textarea>
+            bitte geben Sie jede neue Zutat auf einer neuen Zeile ein
+            <textarea class="form-control" type="text" name="ingredient" rows="3" placeholder="Zutat1 &#10;Zutat2"></textarea>
             <br>
             <label for="note">Notizen</label>
             <textarea class="form-control" name="note" rows="5"></textarea>
             <br>
-            <input type="submit" value="submit">
+            <input type="submit" value="speichern">
         </div>
     </form>
 
